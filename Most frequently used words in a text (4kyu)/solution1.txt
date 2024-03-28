@@ -1,0 +1,76 @@
+The provided code defines a function named topThreeWords that takes a string text as input and returns an array containing the top three most frequent words in the text, excluding punctuation and empty strings. Here's a breakdown of the steps involved:
+
+1. Preprocessing (Cleaning and Splitting):
+
+cleanString = text.replace(/[\.,-\/#!$%\^&\*;:{}=\-_~()]/g, "").toLowerCase()`:
+
+This line cleans up the input text by removing various punctuation characters using a regular expression (/[\.,-\/#!$%\^&\*;:{}=\-_~()]/g`).
+
+It then converts the entire string to lowercase (toLowerCase()) for case-insensitive word counting.
+
+words = cleanString.match(/\S+/g) || []:
+
+This line uses a regular expression (/\S+/g) to split the cleaned string (cleanString) into an array of words (words).
+
+\S+: Matches one or more whitespace characters (\S).
+
+The g flag ensures all occurrences of words are matched.
+
+The || [] part is a default value assignment. If the regular expression doesn't find any words (empty string or only punctuation), it assigns an empty array ([]) to words.
+
+2. Counting Word Frequencies:
+
+frequencies = {}:
+
+This line initializes an empty object named frequencies to store word counts. Each key will be a unique word, and the value will be its frequency.
+
+Looping through words:
+
+for (i = 0; i < words.length; i++) {...}
+
+This loop iterates through each word found in the words array.
+Handling apostrophes (optional):
+
+if (words[i].match(/^[\\']+$/)) { ... } else { ... }
+
+This conditional statement checks if the current word (words[i]) consists only of apostrophes (') or backslashes (\) using a regular expression (/^[\\']+$/).
+
+If it's just punctuation ('), it sets word to an empty array ([]) to effectively ignore them.
+
+Otherwise, it proceeds with the normal word processing.
+
+Counting word occurrences:
+
+frequencies[word] = frequencies[word] || 0;
+
+This line uses the current word (word) as a key in the frequencies object.
+
+The value is calculated using the logical OR operator (||).
+
+If the word already exists as a key (frequencies[word]), it retrieves the current count.
+
+If the word is encountered for the first time (frequencies[word] is undefined), it initializes the count to 0. frequencies[word]++;
+
+This line increments the count for the current word (word) in the frequencies object.
+
+3. Finding Top Three Words:
+
+frequency = Object.keys(frequencies);
+
+This line extracts all the keys (words) from the frequencies object into a new array named frequency.
+
+Sorting by frequency (descending):
+
+frequency.sort(function (a, b) { return frequencies[b] - frequencies[a]; }).slice(0, 3)
+
+This line sorts the frequency array based on the corresponding word frequencies in the frequencies object.
+
+It uses a custom comparator function (function (a, b) { ... }) to compare word frequencies:
+
+frequencies[b] - frequencies[a]: Subtracts the frequency of the first word (a) from the frequency of the second word (b). This ensures words with higher frequencies appear first.
+
+.sort(...) applies the custom comparator function to sort the array.
+
+.slice(0, 3) extracts the first three elements (top three most frequent words) from the sorted array.
+
+Overall, this code effectively finds the top three most frequent words in a text string, excluding punctuation and empty strings, while handling potential edge cases like words consisting only of apostrophes.

@@ -1,0 +1,55 @@
+The provided code defines a function named topThreeWords that takes a string text as input and returns an array containing the top three most frequent words in the text (excluding apostrophes). Here's a breakdown of the code:
+
+1. let dict = new Map();
+
+This line creates a new Map object named dict. A Map is a data structure that stores key-value pairs, similar to an object, but it allows any data type as keys (including objects and arrays).
+
+2. text.replace(...)
+
+This line uses the replace method on the input text string.
+
+The regular expression /[A-z']+(?=[ ]+|$)/g is used within the replace function. Here's what the regex breaks down to:
+
+[A-z']+: Matches one or more occurrences of letters (uppercase or lowercase) and apostrophes.
+
+(?=[ ]+|$): Positive lookahead that asserts the presence of one or more whitespace characters ([ ]+) or the end of the string ($) after the matched word, but doesn't include those characters in the match.
+
+The g flag at the end indicates a global search, replacing all occurrences of the pattern in the string.
+
+3. match => {...}
+
+This is the callback function executed for each match found by the regular expression. It receives the matched word (match) as an argument.
+
+4. let word = match.toLowerCase();
+
+This line converts the matched word (match) to lowercase using toLowerCase(). This ensures case-insensitive counting of words.
+
+5. dict.set(word, dict.has(word) ? dict.get(word) + 1 : 1);
+
+This line uses the set method on the dict Map to store the lowercase word (word) as the key.
+
+The value associated with the key is calculated using a ternary expression:
+
+If dict.has(word) returns true (meaning the word already exists in the Map), it increments the existing count by 1 using dict.get(word) + 1.
+
+If dict.has(word) returns false (meaning the word is encountered for the first time), it sets the initial count to 1.
+
+6. dict.delete("'")
+
+This line explicitly removes the key ' (apostrophe) from the dict Map. Since apostrophes were included in the matching pattern, they might be counted as words. This ensures they are not considered in the final results.
+
+7. [...dict].sort(...)...slice(0, 3);
+
+This line uses a combination of methods to extract the top three most frequent words:
+
+[...dict]: Spreads the contents of the dict Map into an array of key-value pairs.
+
+.sort(...): Sorts the array of key-value pairs in descending order based on the word count (value) using a custom comparator function.
+
+The comparator function ((a, b) => b[1] - a[1]) compares the count values (b[1] - a[1]) and sorts entries with higher counts first.
+
+.slice(0, 3): Extracts the first three elements (top three most frequent words) from the sorted array using slice.
+
+.map(a => a[0]): Maps the extracted key-value pairs to an array containing only the words (keys) using a[0].
+
+In summary, this code efficiently finds the top three most frequent words in a case-insensitive manner, excluding apostrophes.
